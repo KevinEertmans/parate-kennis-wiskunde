@@ -14,30 +14,52 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #f8fafc;
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8fafc;
+  }
+  .kennis-item {
+    transition: all 0.3s ease-in-out;
+    animation: fadeIn 0.5s ease-in-out;
+    position: relative; /* Needed for the fade effect */
+    overflow: hidden; /* Hide overflowing content */
+    height: 250px; /* Set a fixed height for collapsed state */
+    cursor: pointer; /* Indicate it's clickable */
+  }
+  .kennis-item.expanded {
+    height: auto; /* Expand to full height when clicked */
+    cursor: auto; /* Remove pointer when expanded */
+  }
+  .kennis-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px; /* Height of the fade effect */
+    background: linear-gradient(to top, rgba(255,255,255,1), rgba(255,255,255,0));
+    pointer-events: none; /* Allow clicks to pass through */
+    transition: opacity 0.3s ease-in-out;
+  }
+  .kennis-item.expanded::after {
+    opacity: 0; /* Hide fade effect when expanded */
+  }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
     }
-    .kennis-item {
-      transition: all 0.3s ease-in-out;
-      animation: fadeIn 0.5s ease-in-out;
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    iframe {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      border-radius: 0.5rem;
-    }
-  </style>
+  }
+  iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 0.5rem;
+  }
+</style>
 </head>
 <body class="text-gray-800">
 
@@ -55,112 +77,116 @@
   </div>
 
   <script>
-    const kennisItems = [
-{ titel: "Soorten driehoeken", beschrijving: `
-    <div class="flex flex-col gap-4">
-      <figure class="text-center">
-        <svg width="120" height="100" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#333" stroke-width="2">
-          <polygon points="10,90 110,90 60,30" fill="#cbd5e1"/>
-        </svg>
-        <figcaption class="mt-2 font-semibold">Willekeurige driehoek</figcaption>
-      </figure>
-      <figure class="text-center">
-        <svg width="120" height="100" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#333" stroke-width="2">
-          <polygon points="10,90 110,90 80,60" fill="#fca5a5"/>
-          <line x1="110" y1="90" x2="80" y2="60" stroke="#dc2626" stroke-width="3" />
-        </svg>
-        <figcaption class="mt-2 font-semibold">Stomphoekige driehoek</figcaption>
-      </figure>
-      <figure class="text-center">
-        <svg width="120" height="100" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#333" stroke-width="2">
-          <polygon points="10,90 110,90 10,30" fill="#93c5fd"/>
-          <polyline points="10,90 10,30 50,90" stroke="#2563eb" stroke-width="3" />
-          <path d="M 10 90 L 20 90 L 20 80 L 10 80 Z" fill="#2563eb"/>
-        </svg>
-        <figcaption class="mt-2 font-semibold">Rechthoekige driehoek</figcaption>
-      </figure>
-    </div>
-  `,
-  youtubeId: "h6nB__s0Iqg",
-  hoofdstukken: ["De stelling van Pythagoras"]
-},
-      { titel: "Zijden en hun notatie", beschrijving: "Hoe benoem je zijden en hoe geef je lengtes aan met symbolen?", youtubeId: "i2vB8SleKZ4", hoofdstukken: ["De stelling van Pythagoras"] },
-      { titel: "Kwadraat en vierkantswortel", beschrijving: "Wat is een kwadraat, wat is een wortel, en hoe werken positieve en negatieve wortels?", youtubeId: "T9g_v34oX5g", hoofdstukken: ["De stelling van Pythagoras"] },
-      { titel: "Coördinaten in het assenstelsel", beschrijving: "Plaats een punt in het XY-vlak en lees zijn coördinaten af.", youtubeId: "JWP5CGv_h3Y", hoofdstukken: ["De stelling van Pythagoras", "Functies"] },
-      { titel: "Lengtematen: km, m, cm, mm", beschrijving: "Omrekenen tussen verschillende lengtematen.", youtubeId: "cAgMbAUuVqM", hoofdstukken: ["De stelling van Pythagoras"] },
-      { titel: "Oppervlakteformules", beschrijving: "Bereken de oppervlakte van een vierkant, rechthoek en driehoek.", youtubeId: "6yt_w9pNAKA", hoofdstukken: ["De stelling van Pythagoras"] },
-      { titel: "Getallenverzamelingen", beschrijving: "Van natuurlijke tot reële getallen: overzicht en eigenschappen.", youtubeId: "mRMZ1xWWQws", hoofdstukken: ["Reële getallen"] },
-      { titel: "Breuken, procenten en kommagetallen", beschrijving: "Omrekenen en verbanden tussen deze getalvormen.", youtubeId: "HcCzYj6Nt9E", hoofdstukken: ["Reële getallen"] },
-      { titel: "Vergelijkingen oplossen", beschrijving: "Stap voor stap oplossen van eenvoudige vergelijkingen.", youtubeId: "Y1F4cH2lR5s", hoofdstukken: ["Reële getallen", "Eerstegraadsvergelijkingen"] },
-      { titel: "Rekenregels voor machten", beschrijving: "Wat zijn machten en hoe reken je ermee?", youtubeId: "X3DgD5U5YcE", hoofdstukken: ["Reële getallen"] },
-      { titel: "Volgorde van bewerkingen", beschrijving: "Welke rekenvolgorde volg je bij complexe uitdrukkingen?", youtubeId: "Gm5GoZY8A60", hoofdstukken: ["Reële getallen"] },
-      { titel: "Ordenen van getallen", beschrijving: "Getallen vergelijken en sorteren van klein naar groot.", youtubeId: "A2BdFZzN3tE", hoofdstukken: ["Reële getallen"] },
-      { titel: "Benamingen in rechthoekige driehoek", beschrijving: "Wat zijn de schuine zijde, aanliggende en overstaande zijde?", youtubeId: "WOTXQthTwaY", hoofdstukken: ["Goniometrie"] },
-      { titel: "Evenredigheden oplossen", beschrijving: "Hoe los je verhoudingen of evenredigheden correct op?", youtubeId: "R2B7Pqt5oJ4", hoofdstukken: ["Goniometrie"] },
-      { titel: "Getalwaarde berekenen", beschrijving: "Vul een waarde in voor een variabele en bereken.", youtubeId: "QvKAGzVThyE", hoofdstukken: ["Eerstegraadsvergelijkingen"] },
-      { titel: "Is het een oplossing?", beschrijving: "Controleer of een getal voldoet aan een vergelijking.", youtubeId: "JkCmL7rwBr8", hoofdstukken: ["Eerstegraadsvergelijkingen"] },
-      { titel: "Distributiviteit", beschrijving: "Wat is distributiviteit en hoe gebruik je het in vergelijkingen?", youtubeId: "o1_A1fmnAcY", hoofdstukken: ["Eerstegraadsvergelijkingen"] },
-      { titel: "Absoluut en relatief", beschrijving: "Wat is een absoluut getal en wat betekent relatief?", youtubeId: "GnLM3uCPH5Q", hoofdstukken: ["Beschrijvende statistiek"] },
-      { titel: "Gemiddelde, mediaan en modus", beschrijving: "Drie centrale maten om gegevens te beschrijven.", youtubeId: "6yt_w9pNAKA", hoofdstukken: ["Beschrijvende statistiek"] },
-      { titel: "Soorten verbanden", beschrijving: "Lineair, exponentieel, constant – welk type past bij jouw situatie?", youtubeId: "a0E6gnwZKVI", hoofdstukken: ["Functies"] },
-      { titel: "Congruente figuren", beschrijving: "Wat betekent congruentie en hoe herken je het?", youtubeId: "5rSoDPVekQs", hoofdstukken: ["Gelijkvormigheid"] }
-    ];
+  const kennisItems = [
+    { titel: "Soorten driehoeken", beschrijving: `
+      <div class="flex flex-col gap-4">
+        <figure class="text-center">
+          <svg width="120" height="100" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#333" stroke-width="2">
+            <polygon points="10,90 110,90 60,30" fill="#cbd5e1"/>
+          </svg>
+          <figcaption class="mt-2 font-semibold">Willekeurige driehoek</figcaption>
+        </figure>
+        <figure class="text-center">
+          <svg width="120" height="100" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#333" stroke-width="2">
+            <polygon points="10,90 110,90 80,60" fill="#fca5a5"/>
+            <line x1="110" y1="90" x2="80" y2="60" stroke="#dc2626" stroke-width="3" />
+          </svg>
+          <figcaption class="mt-2 font-semibold">Stomphoekige driehoek</figcaption>
+        </figure>
+        <figure class="text-center">
+          <svg width="120" height="100" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#333" stroke-width="2">
+            <polygon points="10,90 110,90 10,30" fill="#93c5fd"/>
+            <polyline points="10,90 10,30 50,90" stroke="#2563eb" stroke-width="3" />
+            <path d="M 10 90 L 20 90 L 20 80 L 10 80 Z" fill="#2563eb"/>
+          </svg>
+          <figcaption class="mt-2 font-semibold">Rechthoekige driehoek</figcaption>
+        </figure>
+      </div>
+    `,
+    youtubeId: "h6nB__s0Iqg",
+    hoofdstukken: ["De stelling van Pythagoras"]
+  },
+  { titel: "Zijden en hun notatie", beschrijving: "Hoe benoem je zijden en hoe geef je lengtes aan met symbolen?", youtubeId: "i2vB8SleKZ4", hoofdstukken: ["De stelling van Pythagoras"] },
+  { titel: "Kwadraat en vierkantswortel", beschrijving: "Wat is een kwadraat, wat is een wortel, en hoe werken positieve en negatieve wortels?", youtubeId: "T9g_v34oX5g", hoofdstukken: ["De stelling van Pythagoras"] },
+  { titel: "Coördinaten in het assenstelsel", beschrijving: "Plaats een punt in het XY-vlak en lees zijn coördinaten af.", youtubeId: "JWP5CGv_h3Y", hoofdstukken: ["De stelling van Pythagoras", "Functies"] },
+  { titel: "Lengtematen: km, m, cm, mm", beschrijving: "Omrekenen tussen verschillende lengtematen.", youtubeId: "cAgMbAUuVqM", hoofdstukken: ["De stelling van Pythagoras"] },
+  { titel: "Oppervlakteformules", beschrijving: "Bereken de oppervlakte van een vierkant, rechthoek en driehoek.", youtubeId: "6yt_w9pNAKA", hoofdstukken: ["De stelling van Pythagoras"] },
+  { titel: "Getallenverzamelingen", beschrijving: "Van natuurlijke tot reële getallen: overzicht en eigenschappen.", youtubeId: "mRMZ1xWWQws", hoofdstukken: ["Reële getallen"] },
+  { titel: "Breuken, procenten en kommagetallen", beschrijving: "Omrekenen en verbanden tussen deze getalvormen.", youtubeId: "HcCzYj6Nt9E", hoofdstukken: ["Reële getallen"] },
+  { titel: "Vergelijkingen oplossen", beschrijving: "Stap voor stap oplossen van eenvoudige vergelijkingen.", youtubeId: "Y1F4cH2lR5s", hoofdstukken: ["Reële getallen", "Eerstegraadsvergelijkingen"] },
+  { titel: "Rekenregels voor machten", beschrijving: "Wat zijn machten en hoe reken je ermee?", youtubeId: "X3DgD5U5YcE", hoofdstukken: ["Reële getallen"] },
+  { titel: "Volgorde van bewerkingen", beschrijving: "Welke rekenvolgorde volg je bij complexe uitdrukkingen?", youtubeId: "Gm5GoZY8A60", hoofdstukken: ["Reële getallen"] },
+  { titel: "Ordenen van getallen", beschrijving: "Getallen vergelijken en sorteren van klein naar groot.", youtubeId: "A2BdFZzN3tE", hoofdstukken: ["Reële getallen"] },
+  { titel: "Benamingen in rechthoekige driehoek", beschrijving: "Wat zijn de schuine zijde, aanliggende en overstaande zijde?", youtubeId: "WOTXQthTwaY", hoofdstukken: ["Goniometrie"] },
+  { titel: "Evenredigheden oplossen", beschrijving: "Hoe los je verhoudingen of evenredigheden correct op?", youtubeId: "R2B7Pqt5oJ4", hoofdstukken: ["Goniometrie"] },
+  { titel: "Getalwaarde berekenen", beschrijving: "Vul een waarde in voor een variabele en bereken.", youtubeId: "QvKAGzVThyE", hoofdstukken: ["Eerstegraadsvergelijkingen"] },
+  { titel: "Is het een oplossing?", beschrijving: "Controleer of een getal voldoet aan een vergelijking.", youtubeId: "JkCmL7rwBr8", hoofdstukken: ["Eerstegraadsvergelijkingen"] },
+  { titel: "Distributiviteit", beschrijving: "Wat is distributiviteit en hoe gebruik je het in vergelijkingen?", youtubeId: "o1_A1fmnAcY", hoofdstukken: ["Eerstegraadsvergelijkingen"] },
+  { titel: "Absoluut en relatief", beschrijving: "Wat is een absoluut getal en wat betekent relatief?", youtubeId: "GnLM3uCPH5Q", hoofdstukken: ["Beschrijvende statistiek"] },
+  { titel: "Gemiddelde, mediaan en modus", beschrijving: "Drie centrale maten om gegevens te beschrijven.", youtubeId: "6yt_w9pNAKA", hoofdstukken: ["Beschrijvende statistiek"] },
+  { titel: "Soorten verbanden", beschrijving: "Lineair, exponentieel, constant – welk type past bij jouw situatie?", youtubeId: "a0E6gnwZKVI", hoofdstukken: ["Functies"] },
+  { titel: "Congruente figuren", beschrijving: "Wat betekent congruentie en hoe herken je het?", youtubeId: "5rSoDPVekQs", hoofdstukken: ["Gelijkvormigheid"] }
+  ];
 
-    const grid = document.getElementById('kennis-grid');
-    const filterContainer = document.getElementById('filter-container');
-    let actieveFilter = 'Alles';
+  const grid = document.getElementById('kennis-grid');
+  const filterContainer = document.getElementById('filter-container');
+  let actieveFilter = 'alles'; // Changed from 'Alles' to 'alles' for consistency with filter buttons
 
-    const renderItems = (items) => {
-      grid.innerHTML = '';
-      items.forEach(item => {
-        const itemDiv = document.createElement('div');
-        itemDiv.className = 'kennis-item bg-white p-6 rounded-xl shadow-md border border-gray-200 flex flex-col';
-        itemDiv.innerHTML = `
-          <h3 class="text-xl font-bold mb-2 text-gray-800">${item.titel}</h3>
-          <p class="text-gray-600 mb-4 flex-grow">${item.beschrijving}</p>
-          <div class="mt-auto">
-            <iframe src="https://www.youtube.com/embed/${item.youtubeId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-        `;
-        grid.appendChild(itemDiv);
+  const renderItems = (items) => {
+    grid.innerHTML = '';
+    items.forEach(item => {
+      const itemDiv = document.createElement('div');
+      itemDiv.className = 'kennis-item bg-white p-6 rounded-xl shadow-md border border-gray-200 flex flex-col';
+      itemDiv.innerHTML = `
+        <h3 class="text-xl font-bold mb-2 text-gray-800">${item.titel}</h3>
+        <p class="text-gray-600 mb-4 flex-grow">${item.beschrijving}</p>
+        <div class="mt-auto">
+          <iframe src="https://www.youtube.com/embed/${item.youtubeId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      `;
+      // Add click listener to toggle the 'expanded' class
+      itemDiv.addEventListener('click', () => {
+        itemDiv.classList.toggle('expanded');
       });
-    };
-
-    const renderFilterKnoppen = () => {
-      const hoofdstukken = ['alles', ...new Set(kennisItems.flatMap(item => item.hoofdstukken))];
-      filterContainer.innerHTML = '';
-      hoofdstukken.forEach(hoofdstuk => {
-        const knop = document.createElement('button');
-        const isActief = hoofdstuk === actieveFilter;
-        knop.className = `px-4 py-2 text-sm md:text-base font-semibold rounded-full transition-all duration-200 ${
-          isActief ? 'bg-blue-600 text-white shadow' : 'bg-white text-gray-700 hover:bg-gray-200 border border-gray-300'
-        }`;
-        knop.textContent = hoofdstuk;
-        knop.dataset.hoofdstuk = hoofdstuk;
-        filterContainer.appendChild(knop);
-      });
-    };
-
-    const filterItems = () => {
-      const gefilterdeItems = actieveFilter === 'alles'
-        ? kennisItems
-        : kennisItems.filter(item => item.hoofdstukken.includes(actieveFilter));
-      renderItems(gefilterdeItems);
-      renderFilterKnoppen();
-    };
-
-    filterContainer.addEventListener('click', (e) => {
-      if (e.target.tagName === 'BUTTON') {
-        actieveFilter = e.target.dataset.hoofdstuk;
-        filterItems();
-      }
+      grid.appendChild(itemDiv);
     });
+  };
 
-    window.onload = () => {
-      renderFilterKnoppen();
-      renderItems(kennisItems);
-    };
-  </script>
+  const renderFilterKnoppen = () => {
+    const hoofdstukken = ['alles', ...new Set(kennisItems.flatMap(item => item.hoofdstukken))];
+    filterContainer.innerHTML = '';
+    hoofdstukken.forEach(hoofdstuk => {
+      const knop = document.createElement('button');
+      const isActief = hoofdstuk === actieveFilter;
+      knop.className = `px-4 py-2 text-sm md:text-base font-semibold rounded-full transition-all duration-200 ${
+        isActief ? 'bg-blue-600 text-white shadow' : 'bg-white text-gray-700 hover:bg-gray-200 border border-gray-300'
+      }`;
+      knop.textContent = hoofdstuk.charAt(0).toUpperCase() + hoofdstuk.slice(1); // Capitalize first letter for display
+      knop.dataset.hoofdstuk = hoofdstuk;
+      filterContainer.appendChild(knop);
+    });
+  };
+
+  const filterItems = () => {
+    const gefilterdeItems = actieveFilter === 'alles'
+      ? kennisItems
+      : kennisItems.filter(item => item.hoofdstukken.includes(actieveFilter));
+    renderItems(gefilterdeItems);
+    renderFilterKnoppen();
+  };
+
+  filterContainer.addEventListener('click', (e) => {
+    if (e.target.tagName === 'BUTTON') {
+      actieveFilter = e.target.dataset.hoofdstuk;
+      filterItems();
+    }
+  });
+
+  window.onload = () => {
+    renderFilterKnoppen();
+    renderItems(kennisItems);
+  };
+</script>
 </body>
 </html>
 
